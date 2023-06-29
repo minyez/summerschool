@@ -43,3 +43,7 @@ solutions/programming/fortran/io/io
 *.Rproj
 .RData
 .Rhistory
+
+# executables
+*_C
+*_f
