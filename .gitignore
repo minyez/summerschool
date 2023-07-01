@@ -45,5 +45,6 @@ solutions/programming/fortran/io/io
 .Rhistory
 
 # executables
+*_c
 *_C
 *_f

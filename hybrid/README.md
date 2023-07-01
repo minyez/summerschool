@@ -2,22 +2,22 @@
 
 ### Getting started with OpenMP
 
-- [Hello world](omp-hello/)
-- [Work sharing and vector addition](work-sharing/)
+- [ ] [Hello world](omp-hello/)
+- [X] [Work sharing and vector addition](work-sharing/)
 
 ### Library functions
 
-- [OpenMP library functions](lib-funcs/)
+- [X] [OpenMP library functions](lib-funcs/)
 
 ### Data sharing
 
-- [Data sharing and parallel regions](data-sharing/)
-- [Race condition in parallel sum](race-condition/)
+- [X] [Data sharing and parallel regions](data-sharing/)
+- [X] [Race condition in parallel sum](race-condition/)
 
 ### Reductions and execution controls
 
-- [Reduction](reduction/)
-- [Execution controls](execution-controls/)
+- [X] [Reduction](reduction/)
+- [X] [Execution controls](execution-controls/)
 
 ### Heat equation
 
