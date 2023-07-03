@@ -1,0 +1,53 @@
+Legend:
+
+  A - recognized idiom
+  D - deleted loop
+  I - callee inlined here
+  L - interleaved loop
+  M - multithreaded
+  P - peeled loop
+  S - distributed loop
+  U - completely unrolled loop
+  u - partially unrolled loop
+  V - vectorized loop
+  X - loop interchanged with enclosing loop
+  Z - versioned loop for LICM
+  + - additional messages below
+
+----------
+
+ 1.           #include <stdio.h>
+ 2.           
+ 3.           #define NX 102400
+ 4.           
+ 5.           int main(void)
+ 6.           {
+ 7.               double vecA[NX], vecB[NX], vecC[NX];
+ 8.           
+ 9.               /* Initialization of the vectors */
+10.               for (int i = 0; i < NX; i++) {
+11.                   vecA[i] = 1.0 / ((double) (NX - i));
+12.                   vecB[i] = vecA[i] * vecA[i];
+13.               }
+14.           
+15.               // TODO: Implement vector addition vecC = vecA + vecB and use OpenMP
+16.               //       for computing it in the device
+17.   I       #pragma omp target teams
+18.   I 0--<> #pragma omp distribute parallel for
+19. +   M---<     for (int i = 0; i < NX; i++) {
+20.     M             vecC[i] = vecA[i] + vecB[i];
+21.     M--->     }
+22.           
+23.               double sum = 0.0;
+24.               /* Compute the check value */
+25.               for (int i = 0; i < NX; i++) {
+26.                   sum += vecC[i];
+27.               }
+28.               printf("Reduction sum: %18.16f\n", sum);
+29.           
+30.               return 0;
+31.           }
+
+----------
+
+19. Outlined parallel region

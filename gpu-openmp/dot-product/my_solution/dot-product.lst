@@ -1,0 +1,142 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                          S u m m a r y   R e p o r t
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Compilation
+-----------
+File     : /pfs/lustrep1/scratch/project_465000536/mizhang/summerschool/gpu-openmp/dot-product/my_solution/dot-product.F90
+Compiled : 07/02/23  14:50:18
+Compiler : Version 15.0.1
+Ftnlx    : Version 15.0.1 
+Target   : x86-64
+Command  : ftn_driver.exe -hcpu=x86-trento -haccel=amdgcn-gfx90a -hnetwork=ofi
+           -hdynamic -D__CRAY_X86_TRENTO -D__CRAY_AMD_GFX90A
+           -D__CRAYXT_COMPUTE_LINUX_TARGET dot-product.F90 -odot-product_f
+           -fopenmp -hmsgs -hlist=m
+           -I/opt/cray/pe/cce/15.0.1/cce-clang/x86_64/lib/clang/15.0.6/include
+           -I/opt/cray/pe/cce/15.0.1/cce/x86_64/include/craylibs -I/usr/include
+           -L/opt/cray/pe/gcc/10.3.0/snos/lib64 -D_HIP_PLATFORM_HCC_
+           -I/opt/cray/pe/mpich/8.1.18/ofi/cray/10.0/include
+           -I/opt/cray/pe/libsci/22.08.1.1/CRAY/9.0/x86_64/include
+           -I/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/rocprofiler/include
+           -I/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/roctracer/include
+           -I/opt/cray/pe/dsmml/0.2.2/dsmml//include
+           -I/opt/cray/xpmem/2.5.2-2.4_3.20__gd0f7936.shasta/include
+           -L/opt/cray/pe/mpich/8.1.18/ofi/cray/10.0/lib
+           -L/opt/cray/pe/mpich/8.1.18/gtl/lib
+           -L/opt/cray/pe/libsci/22.08.1.1/CRAY/9.0/x86_64/lib
+           -L/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/lib64
+           -L/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/lib
+           -L/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/rocprofiler/lib
+           -L/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/rocprofiler/tool
+           -L/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/roctracer/lib
+           -L/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/roctracer/tool
+           -L/opt/cray/pe/dsmml/0.2.2/dsmml//lib
+           -L/opt/cray/pe/cce/15.0.1/cce/x86_64/lib/pkgconfig/../
+           -L/opt/cray/xpmem/2.5.2-2.4_3.20__gd0f7936.shasta/lib64 -lamdhip64
+           -lmpi_gtl_hsa -lxpmem -ldl -lquadmath -lcraymp -lcrayacc_amdgpu
+           -lopenacc -lmodules -lfi -lcraymath -lf -lu -lcsup -I/usr/include
+           -lstdc++ -lpthread
+           -L/opt/cray/pe/cce/15.0.1/cce-clang/x86_64/lib/clang/15.0.6/lib/linux
+           -lclang_rt.builtins-x86_64
+Program
+  Units  : DOT_PRODUCT
+
+ftnlx report
+------------
+Source   : /pfs/lustrep1/scratch/project_465000536/mizhang/summerschool/gpu-openmp/dot-product/my_solution/dot-product.F90
+Date     : 07/02/2023  14:50:19
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                          S o u r c e   L i s t i n g
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+     %%%    L o o p m a r k   L e g e n d    %%%
+
+     Primary Loop Type        Modifiers
+     ------- ---- ----        ---------
+     A - Pattern matched      a - atomic memory operation
+                              b - blocked
+     C - Collapsed            c - conditional and/or computed
+     D - Deleted               
+     E - Cloned                
+     F - Flat - No calls      f - fused
+     G - Accelerated          g - partitioned
+     I - Inlined              i - interchanged
+     M - Multithreaded        m - partitioned
+                              n - non-blocking remote transfer
+                              p - partial
+     R - Rerolling            r - unrolled
+                              s - shortloop
+     V - Vectorized           w - unwound
+
+     + - More messages listed at end of listing
+     ------------------------------------------
+
+
+    1.              program dot_product
+    2.                implicit none
+    3.                integer, parameter :: rk = selected_real_kind(12)
+    4.                integer, parameter :: ik = selected_int_kind(9)
+    5.                integer, parameter :: nx = 102400
+    6.              
+    7.                real(kind=rk), dimension(nx) :: vecA, vecB, vecC
+    8.                real(kind=rk)    :: res
+    9.                integer(kind=ik) :: i
+   10.              
+   11.                ! Initialization of vectors
+   12.    Vr2-----<   do i = 1, nx
+   13.    Vr2            vecA(i) = 1.0_rk/(real(nx - i + 1, kind=rk))
+   14.    Vr2            vecB(i) = vecA(i)**2
+   15.    Vr2----->   end do
+   16.              
+   17.                ! TODO start: offload and parallelize the computation
+   18.                res = 0.0
+   19.  + MG------< !$omp target teams distribute simd map(to:vecA,vecB) reduction(+:res)
+   20.    MG gr4--<   do i = 1, nx
+   21.    MG gr4         res = res + vecA(i) * vecB(i)
+   22.    MG gr4-->   end do
+   23.    MG------> !$omp end target teams distribute simd
+   24.              
+   25.                ! TODO end
+   26.              
+   27.                ! Compute the check value
+   28.                write(*,*) 'Dot product: ', res
+   29.              
+   30.              end program dot_product
+
+ftn-6005 ftn: SCALAR DOT_PRODUCT, File = dot-product.F90, Line = 12 
+  A loop starting at line 12 was unrolled 2 times.
+
+ftn-6204 ftn: VECTOR DOT_PRODUCT, File = dot-product.F90, Line = 12 
+  A loop starting at line 12 was vectorized.
+
+ftn-6405 ftn: ACCEL DOT_PRODUCT, File = dot-product.F90, Line = 19 
+  A region starting at line 19 and ending at line 23 was placed on the accelerator.
+
+ftn-6823 ftn: THREAD DOT_PRODUCT, File = dot-product.F90, Line = 19 
+  A region starting at line 19 and ending at line 23 was multi-threaded.
+
+ftn-6416 ftn: ACCEL DOT_PRODUCT, File = dot-product.F90, Line = 19 
+  If not already present: allocate memory and copy variable "res" to accelerator, copy back at line 23 (acc_copy).
+
+ftn-6418 ftn: ACCEL DOT_PRODUCT, File = dot-product.F90, Line = 19 
+  If not already present: allocate memory and copy user shaped variable "vecb" to accelerator, free at line 23 (acc_copyin).
+
+ftn-6418 ftn: ACCEL DOT_PRODUCT, File = dot-product.F90, Line = 19 
+  If not already present: allocate memory and copy user shaped variable "veca" to accelerator, free at line 23 (acc_copyin).
+
+ftn-6823 ftn: THREAD DOT_PRODUCT, File = dot-product.F90, Line = 19 
+  A region starting at line 19 and ending at line 23 was multi-threaded.
+
+ftn-6005 ftn: SCALAR DOT_PRODUCT, File = dot-product.F90, Line = 20 
+  A loop starting at line 20 was unrolled 4 times.
+
+ftn-6430 ftn: ACCEL DOT_PRODUCT, File = dot-product.F90, Line = 20 
+  A loop starting at line 20 was partitioned across the threadblocks and the 256 threads within a threadblock.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
