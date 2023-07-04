@@ -2,34 +2,34 @@
 
 ## HIP Error Checking
 
-- [Wrapping HIP calls into an error checking macro](error-checking)
+- [X] [Wrapping HIP calls into an error checking macro](error-checking)
 
 ## Basics of HIP programming
 
-- [Hello world](hello-world)
-- [Kernel: saxpy](kernel-saxpy)
-- [Kernel: copy2d](kernel-copy2d)
+- [X] [Hello world](hello-world)
+- [X] [Kernel: saxpy](kernel-saxpy)
+- [X] [Kernel: copy2d](kernel-copy2d)
 
 ## Streams, events, and synchronization
 
-- [Understanding asynchronicity using events](events)
-- [Investigating streams and events](streams)
-- [Asynchronous operations (OpenMP)](../gpu-openmp/async-operations)
+- [X] [Understanding asynchronicity using events](events)
+- [X] [Investigating streams and events](streams)
+- [ ] [Asynchronous operations (OpenMP)](../gpu-openmp/async-operations)
 
 ## Memory management
 
-- [Memory management strategies](memory-prefetch)
-- [Unified memory and structs](memory-struct)
-- [Memory performance strategies](memory-performance)
-- [EXTRA: advanced c++ memory wrapping strategies](memory-advanced)
+- [X] [Memory management strategies](memory-prefetch)
+- [X] [Unified memory and structs](memory-struct)
+- [X] [Memory performance strategies](memory-performance)
+- [ ] [EXTRA: advanced c++ memory wrapping strategies](memory-advanced)
 
 ## Fortran and HIP
 
-- [Hipfort: saxpy](hipfort)
+- [ ] [Hipfort: saxpy](hipfort)
 
 ## Multi-GPU programming
 
-- [Vector sum on two GPUs without MPI](vector-sum)
-- [Ping-pong with multiple GPUs and MPI](ping-pong)
-- [Peer to peer device access (HIP and OpenMP)](p2pcopy)
-- [Bonus: Heat equation with HIP](heat-equation)
+- [ ] [Vector sum on two GPUs without MPI](vector-sum)
+- [ ] [Ping-pong with multiple GPUs and MPI](ping-pong)
+- [ ] [Peer to peer device access (HIP and OpenMP)](p2pcopy)
+- [ ] [Bonus: Heat equation with HIP](heat-equation)
