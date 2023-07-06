@@ -29,7 +29,7 @@
 
 ## Multi-GPU programming
 
-- [ ] [Vector sum on two GPUs without MPI](vector-sum)
-- [ ] [Ping-pong with multiple GPUs and MPI](ping-pong)
-- [ ] [Peer to peer device access (HIP and OpenMP)](p2pcopy)
+- [X] [Vector sum on two GPUs without MPI](vector-sum)
+- [X] [Ping-pong with multiple GPUs and MPI](ping-pong)
+- [X] [Peer to peer device access (HIP and OpenMP)](p2pcopy)
 - [ ] [Bonus: Heat equation with HIP](heat-equation)
